@@ -1,10 +1,10 @@
-# Usa una imagen de Maven para compilar el código
+# Paso 1: Construir la app con Maven
 FROM maven:3.8.5-openjdk-17 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Usa una imagen ligera de Java para ejecutar la app
-FROM openjdk:17-jdk-slim
+# Paso 2: Ejecutar la app con una imagen moderna de Java 17
+FROM eclipse-temurin:17-jdk-jammy
 COPY --from=build /target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
